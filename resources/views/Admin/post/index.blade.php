@@ -23,6 +23,7 @@
                 <th scope="col">Titolo</th>
                 <th scope="col">Contenuto</th>
                 <th scope="col">Slug</th>
+                <th scope="col">Cateogria</th>
                 <th scope="col">Azioni</th>
               </tr>
             </thead>
@@ -36,6 +37,8 @@
                     {{-- il contenuto mostro solo i primi 30 caratteri usando la funzione substr di php --}}
                     <td>{{ substr($post->content, 0, 30) }}</td>
                     <td>{{ $post->slug }}</td>
+                    {{-- laravel sa già a cosa riferirsi --}}
+                    <td>{{ $post->category->name }}</td>
                     <td class="d-flex gap-1">
                       {{-- show --}}
                       <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-success">Vedi</a>
