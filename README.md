@@ -51,3 +51,8 @@ Mi serve impostare delle rotte: in particolare voglio che tutto ciò che non è 
 - fill di $post con $data e redirect sulla show con post creato -> creo la view post.show e la gestisco nel controller dei post
 - Gestisco controller e viste per edit e update
 - Gestico destroy/delete
+
+## Creazione tabella categorie
+- *php artisan make:migration create_categories_table*
+- e effettuo migrazione
+- creo model e faccio seed *php artisan db:seed --class=CategoryTableSeeder*
