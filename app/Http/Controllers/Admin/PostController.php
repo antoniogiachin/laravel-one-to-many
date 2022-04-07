@@ -154,6 +154,6 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('admin.posts.index')->with('delete', 'Eliminazione avvenuta con successo!' );
+        return redirect()->route('admin.posts.index')->with('delete', 'Eliminazione avvenuta con successo!');
     }
 }
