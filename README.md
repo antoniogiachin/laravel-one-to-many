@@ -56,3 +56,7 @@ Mi serve impostare delle rotte: in particolare voglio che tutto ciò che non è 
 - *php artisan make:migration create_categories_table*
 - e effettuo migrazione
 - creo model e faccio seed *php artisan db:seed --class=CategoryTableSeeder*
+
+## Collego le due tabelle posts e categories
+La relazione è di uno (categoies) a molti (posts). La tabella dipendente è dunque post che conterrà la foreignkey
+- Per aggiungerla faccio un update della migration tabella posts, da documentazione il comando artisan *php artisan make:migration add_votes_to_users_table --table=users* -> il mio sarà *php artisan make:migration add_foreign_key_to_posts_table --table=posts* ->vai al file per i passaggi
