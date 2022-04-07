@@ -1,6 +1,14 @@
 @extends('admin.layouts.base')
 
 @section('content')
+
+    {{-- eliminazione con successo --}}
+    @if (session('delete'))
+      <div class="alert alert-danger">
+        {{ session('delete') }}
+      </div>
+    @endif
+
     <div class="container">
         <h1 class="text-center mb-5">Tabella dei post </h1>
 
@@ -28,7 +36,25 @@
                     {{-- il contenuto mostro solo i primi 30 caratteri usando la funzione substr di php --}}
                     <td>{{ substr($post->content, 0, 30) }}</td>
                     <td>{{ $post->slug }}</td>
-                    <td>Azioni</td>
+                    <td class="d-flex gap-1">
+                      {{-- show --}}
+                      <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-success">Vedi</a>
+                      {{-- edit --}}
+                      <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-warning">Modifica</a>
+                      {{-- destroy --}}
+                      <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
+                        
+                        {{-- token sicurezza --}}
+                        @csrf
+
+                        {{-- metodo delete --}}
+                        @method('DELETE')
+
+                        <button class="btn btn-danger">Elimina</button>
+                      
+                      </form>
+
+                    </td>
                 </tr>
               @endforeach  
             </tbody>

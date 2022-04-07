@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+//per usare funzione per lo slug
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -39,9 +41,47 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        //
+        //validazioni
+        $request->validate(
+
+            [
+                "title" => 'required|min:2',
+                "content"=> 'required|min:10',
+            ]
+
+        );
+
+        // prelevo dati dal form
+        $data = $request->all();
+
+        //definisco lo slug - funzione laravel di STR (in alto: use Illuminate\Support\Str;)
+        $slug = Str::slug($data['title']);
+
+        //definisco funzione che fa si che lo slug non sia lo stesso se due titoli sono simili
+        //imposto un counter, poi ciclo while: query sugli slug di post se trova corrispondenza fa un append allo slug del contatore, incrementa il contatore. Se non trova corrispondenza esce dal ciclo while.
+        $counter = 1;
+
+        //potrei togliere "=" e sarebbe comunque un operatore di uguaglianza
+        while(Post::where('slug', '=',  $slug)->first()){
+            
+            $slug = Str::slug($data['title']) . '-' . $counter;
+            $counter++;
+
+        }
+
+        // inserisco lo slug dentro data
+        $data['slug'] = $slug;
+
+        //fill su post
+        $post->fill($data);
+        // salvo
+        $post->save();
+
+        //decido il redirect
+        return redirect()->route('admin.posts.show', $post->id);
+
     }
 
     /**
@@ -50,9 +90,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view ('admin.post.show', compact('post'));
     }
 
     /**
@@ -61,9 +101,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.post.edit', compact('post'));
     }
 
     /**
@@ -73,9 +113,35 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        // inserisco validazioni
+        $request->validate(
+            [
+                "title" => 'required|min:2',
+                "content"=> 'required|min:10',
+            ]
+        );
+        //salvo in data il contenuto form
+        $data = $request->all();
+
+        //gestisco lo slug
+        $slug = Str::slug($data['title']);
+
+        //qualora lo slug sia diverso da quello originale del post allora eseguo il ciclo while come per store
+        if($post->slug != $slug){
+            $counter =1;
+            while(Post::where('slug', $slug)->first()){
+                $slug = Str::slug($data['title']) . "-". $counter;
+                $counter++;
+            };
+            $data['slug']=$slug;
+        }
+
+        $post->fill($data);
+        $post->save();
+
+        return redirect()-> route('admin.posts.show', $post->id);
     }
 
     /**
@@ -84,8 +150,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('admin.posts.index')->with('delete', 'Eliminazione avvenuta con successo!' );
     }
 }

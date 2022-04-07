@@ -78,6 +78,17 @@
         </nav>
 
         <main class="py-4">
+            {{-- errori validazioni --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            {{-- contenuto --}}
             @yield('content')
         </main>
     </div>

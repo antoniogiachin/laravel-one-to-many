@@ -39,13 +39,15 @@ Mi serve impostare delle rotte: in particolare voglio che tutto ciò che non è 
 - Imposto nel model di Post i campi fillable
 - TODO
 
-## Gestione rotte PostController
+## Gestione rotte PostController e views post
 - Route::resource nel file web.php, essendo rotte accessibili solo se admin finiscono all'interno del gruppo di admin
 - PostController -> funzione index() mi ritorna index dei post -> nuova cartella post in admin con le varie viste dei post
 - Funzione index() PostController -> preleva tutti i post dal DB e li invia compact alla index dei post
-- TODO
-
-## Gestione views Post
 - Layout base modificato-> inseriti nella nav collegamento a dashboard(admin.home) e alla tabella dei post (admin.post.index)
 - Inserita tabella in admin.post.index e pulsante per admin.post.create
-- Form per creazione in admin.post.create
+- Form per creazione in admin.post.create -> inserimento {{old}} nel form create
+- Inserimento validazioni nello store - e flash message dell'errore - prelievo dati dal form e inserisco in data
+- gestisco lo slug da inserire dentro data
+- fill di $post con $data e redirect sulla show con post creato -> creo la view post.show e la gestisco nel controller dei post
+- Gestisco controller e viste per edit e update
+- Gestico destroy/delete
