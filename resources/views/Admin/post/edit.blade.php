@@ -25,6 +25,17 @@
                     <label for="content">Post</label>
                 </div>
             </div>
+
+            {{-- select category --}}
+            <div class="form-group">
+                <label for="category_id">Categoria</label>
+                <select class="form-select mb-3" name="category_id" id="category_id">
+                    <option value="">Seleziona la categoria</option>
+                    @foreach ($categories as $category)
+                        <option {{(old('category_id', $post->category_id) == $category->id) ? 'selected': ''}} value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+            </div>
     
             {{-- bottone submit --}}
             <button type="submit" class="btn btn-primary">Salva</button>

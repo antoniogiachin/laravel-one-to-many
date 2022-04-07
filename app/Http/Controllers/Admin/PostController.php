@@ -106,8 +106,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post, Category $categories)
+    public function edit(Post $post)
     {
+        //prelevo le categorie dal db
+        $categories = Category::all();
         return view('admin.post.edit', compact('post', 'categories'));
     }
 
@@ -125,6 +127,7 @@ class PostController extends Controller
             [
                 "title" => 'required|min:2',
                 "content"=> 'required|min:10',
+                "category_id"=>'nullable|exists:categories,id'
             ]
         );
         //salvo in data il contenuto form
